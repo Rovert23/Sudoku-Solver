@@ -96,22 +96,24 @@ public class GUI extends JFrame {
                 String selectedAlgorithm = (String) cb.getSelectedItem();
                 int[][] solvedBoard = null;
 
-
-				// YOU NEED TO FINISH THIS SECTION BY ADDING IN ALL OF THE OTHER ALGORITHMS
-                if (selectedAlgorithm.equals("Backtracking")) {
-                    solvedBoard = Algorithm.solveWithBacktracking(board);
-                } else if (selectedAlgorithm.equals("Dancing Links")) {
-                    solvedBoard = Algorithm.solveWithDancingLinks(board);
-                }
-
 				if (!isValid(board)) {
 					JOptionPane.showMessageDialog(frame, "This board is inValid!");
 				}
-                else if (solvedBoard != null) {
-                    updateBoard(solvedBoard);
-                } else {
-                    JOptionPane.showMessageDialog(frame, "No solution found!");
-                }
+				else {
+					// YOU NEED TO FINISH THIS SECTION BY ADDING IN ALL OF THE OTHER ALGORITHMS
+					if (selectedAlgorithm.equals("Backtracking")) {
+						solvedBoard = Algorithm.solveWithBacktracking(board);
+					} else if (selectedAlgorithm.equals("Dancing Links")) {
+						solvedBoard = Algorithm.solveWithDancingLinks(board);
+					}
+	
+	
+					if (solvedBoard != null) {
+						updateBoard(solvedBoard);
+					} else {
+						JOptionPane.showMessageDialog(frame, "No solution found!");
+					}
+				}
             }
         });
 
@@ -153,6 +155,17 @@ public class GUI extends JFrame {
 	public boolean isValid(int[][] board) {
 
 		// You need to finish imnplementing this method
+		for (each row if (row contains more than one number in the range 1-9)) {
+			return false;
+		}
+
+		for (each col if (col contains more than one number in the range 1-9)) {
+			return false;
+		}
+
+		for (each box if (box contains more than one number in the range 1-9)) {
+			return false;
+		}
 
 		return false;
 	}
