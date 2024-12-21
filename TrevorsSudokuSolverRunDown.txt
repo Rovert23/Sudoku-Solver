@@ -1,0 +1,14 @@
+Goals:
+1) Solve Sudoku puzzles as fast as possible (should be efficient as well) | This should apply to at least one of the solving methods
+2) Have a easy to use GUI (simple, buttons, few actions, very little knowledge required)
+3) Be able to easily import a sudoku puzzle (allow multiple types of input)
+4) Be able to select multiple types of solving methods (a couple different solving algorithms or solving methods)
+5) Be able to generate new sudoku puzzles that can be solved logically (human solvable with no guessing)
+6) Be able to solve different sizes and difficulties of sudoku puzzles (bigger or smaller grids, varying difficulties, and numbers/letters/etc)
+7) Display solve time, and store it to a log file
+
+Java Setup:
+1) App Class with main method (SudokuSolver.java)
+2) Algorithms class with different algorithm methods (Algorithms.java)
+3) UI Class with all of the UI elements (I think idk) (GUI.java)
+4) Import Class that handles all importing and processing (Import.java)
