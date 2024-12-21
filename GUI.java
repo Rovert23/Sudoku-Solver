@@ -68,24 +68,8 @@ public class GUI extends JFrame {
 		gridPanel.setPreferredSize(new Dimension(x * 9, y * 9)); // Preferred size for the grid
 		frame.add(gridPanel);  // Add to CENTER
 
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
 		// Add a button to the GUI
 		JPanel buttonPanel = new JPanel();
-
-
 
 		JLabel lbl = new JLabel("Select an Algorithm and then press SOLVE");
 		lbl.setVisible(true);
@@ -99,50 +83,37 @@ public class GUI extends JFrame {
 		cb.setVisible(true);
 		buttonPanel.add(cb);
 
-
-
-
-
 		JButton button = new JButton("Solve");
 
 		button.setBounds(150, 200, 220, 50);
 		buttonPanel.add(button);
 		frame.add(buttonPanel);
 
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int[][] board = getBoard();
+                String selectedAlgorithm = (String) cb.getSelectedItem();
+                int[][] solvedBoard = null;
 
 
+				// YOU NEED TO FINISH THIS SECTION BY ADDING IN ALL OF THE OTHER ALGORITHMS
+                if (selectedAlgorithm.equals("Backtracking")) {
+                    solvedBoard = Algorithm.solveWithBacktracking(board);
+                } else if (selectedAlgorithm.equals("Dancing Links")) {
+                    solvedBoard = Algorithm.solveWithDancingLinks(board);
+                }
 
-
-
-
-
-
-
-
-
-
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = ""; // Get the text
-				for (int row = 0; row < 9; row++) {
-					for (int col = 0; col < 9; col++) {
-						if (TFS[row][col].getText() != null) {
-							text += TFS[row][col].getText(); // Append the number
-						}
-						else {
-							text += "0"; // Append spaces for empty cells (or "0 " if empty=0)
-						}
-					}
+				if (!isValid(board)) {
+					JOptionPane.showMessageDialog(frame, "This board is inValid!");
 				}
-				if (text.isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "Text field is empty!");
-				} else {
-					JOptionPane.showMessageDialog(frame, "The text is: " + text);
-				}
-			}
-		});
+                else if (solvedBoard != null) {
+                    updateBoard(solvedBoard);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No solution found!");
+                }
+            }
+        });
 
 		// Set the GUI size
 		frame.setSize(x*9+20, y*9+90);
@@ -152,5 +123,37 @@ public class GUI extends JFrame {
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
 
+	}
+
+	public void updateBoard(int[][] board) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                TFS[row][col].setText(String.valueOf(board[row][col]));
+            }
+        }
+    }
+
+	public int[][] getBoard() {
+		int[][] board = new int[9][9];
+		
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				String text = TFS[row][col].getText();
+				if (text != null && !text.isEmpty()) {
+					board[row][col] = Integer.parseInt(text);
+				} else {
+					board[row][col] = 0;
+				}
+			}
+		}
+
+		return board;
+	}
+
+	public boolean isValid(int[][] board) {
+
+		// You need to finish imnplementing this method
+
+		return false;
 	}
 }

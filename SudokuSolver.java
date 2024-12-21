@@ -15,10 +15,6 @@ public class SudokuSolver {
 		// if the button is pressed
 
 
-		// Run Selected Algorithm
-		// GUI.getAlgorithm();
-
-
 		// Display Results Onto Grid GUI
 
 
