@@ -4,6 +4,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.AbstractDocument;
@@ -153,20 +156,50 @@ public class GUI extends JFrame {
 	}
 
 	public boolean isValid(int[][] board) {
+        // Create a HashSet to store the unique elements
+        Set<Integer> rowCheck;
+		Set<Integer> colCheck;
+		Set<Integer> boxCheck;
 
-		// You need to finish imnplementing this method
-		for (each row if (row contains more than one number in the range 1-9)) {
-			return false;
+        // Iterate through each row
+        for (int row = 0; row < 9; row++) { 
+			rowCheck = new HashSet<>();
+          	for (int col = 0; col < 9; col++) {
+				// If the element is already present, return true
+				// Else insert the element into the set
+				if (rowCheck.contains(board[row][col]))
+					return false;
+				else
+					rowCheck.add(board[row][col]);
+			}
 		}
 
-		for (each col if (col contains more than one number in the range 1-9)) {
-			return false;
+		// Check columns
+		for (int col = 0; col < 9; col++) {
+			colCheck = new HashSet<>();
+			for (int row = 0; row < 9; row++) {
+				if (colCheck.contains(board[row][col]))
+					return false;
+				else
+					colCheck.add(board[row][col]);
+			}
 		}
 
-		for (each box if (box contains more than one number in the range 1-9)) {
-			return false;
+		// Check 3x3 subgrids
+		for (int boxRow = 0; boxRow < 3; boxRow++) {
+			for (int boxCol = 0; boxCol < 3; boxCol++) {
+				boxCheck = new HashSet<>();
+				for (int row = boxRow * 3; row < boxRow * 3 + 3; row++) {
+					for (int col = boxCol * 3; col < boxCol * 3 + 3; col++) {
+					if (boxCheck.contains(board[row][col]))
+						return false;
+					else
+						boxCheck.add(board[row][col]);
+					}
+				}
+			}
 		}
 
-		return false;
+		return true;
 	}
 }
