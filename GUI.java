@@ -155,51 +155,57 @@ public class GUI extends JFrame {
 		return board;
 	}
 
-	public boolean isValid(int[][] board) {
-        // Create a HashSet to store the unique elements
-        Set<Integer> rowCheck;
-		Set<Integer> colCheck;
-		Set<Integer> boxCheck;
-
-        // Iterate through each row
-        for (int row = 0; row < 9; row++) { 
-			rowCheck = new HashSet<>();
-          	for (int col = 0; col < 9; col++) {
-				// If the element is already present, return true
-				// Else insert the element into the set
-				if (rowCheck.contains(board[row][col]))
+	public boolean isSolved(int[][] board) {
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				if (board[row][col] == 0) {
 					return false;
-				else
-					rowCheck.add(board[row][col]);
+				}
 			}
 		}
+		return true;
+	}
 
+	public boolean isValid(int[][] board) {
+		// Create a HashSet to store the unique elements
+		Set<Integer> rowCheck;
+		Set<Integer> colCheck;
+		Set<Integer> boxCheck;
+	
+		// Iterate through each row
+		for (int row = 0; row < 9; row++) { 
+			rowCheck = new HashSet<>(); 
+			for (int col = 0; col < 9; col++) {
+				if (board[row][col] != 0 && !rowCheck.add(board[row][col])) { 
+					return false; 
+				}
+			}
+		}
+	
 		// Check columns
 		for (int col = 0; col < 9; col++) {
 			colCheck = new HashSet<>();
 			for (int row = 0; row < 9; row++) {
-				if (colCheck.contains(board[row][col]))
+				if (board[row][col] != 0 && !colCheck.add(board[row][col])) {
 					return false;
-				else
-					colCheck.add(board[row][col]);
+				}
 			}
 		}
-
+	
 		// Check 3x3 subgrids
 		for (int boxRow = 0; boxRow < 3; boxRow++) {
 			for (int boxCol = 0; boxCol < 3; boxCol++) {
 				boxCheck = new HashSet<>();
 				for (int row = boxRow * 3; row < boxRow * 3 + 3; row++) {
 					for (int col = boxCol * 3; col < boxCol * 3 + 3; col++) {
-					if (boxCheck.contains(board[row][col]))
-						return false;
-					else
-						boxCheck.add(board[row][col]);
+						if (board[row][col] != 0 && !boxCheck.add(board[row][col])) {
+							return false;
+						}
 					}
 				}
 			}
 		}
-
+	
 		return true;
 	}
 }
