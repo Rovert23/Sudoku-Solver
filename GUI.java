@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.AbstractDocument;
@@ -46,7 +45,6 @@ public class GUI extends JFrame {
 
 				TF.setHorizontalAlignment(JTextField.CENTER);
 
-
 				// This code block is used to make sure only one single integer can be placed inside each box (tbh idk how it works)
 				// WARNING THIS CODE BLOCK MAY BE HIGHLY CONFUSING!!!
 				//---------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +59,6 @@ public class GUI extends JFrame {
                     }
                 });
 				// --------------------------------------------------------------------------------------------------------------------------------
-
 
 				gridPanel.add(TF);
 				TFS[row][col] = TF;
@@ -79,7 +76,7 @@ public class GUI extends JFrame {
 	
 		buttonPanel.add(lbl);
 	
-		String[] choices = {"DIY (Do It Yourself)", "Backtracking","Use A Human", "Random","Speed Deamon"};
+		String[] choices = {"Backtracking", "DIY (Do It Yourself)", "Use A Human", "Speed Deamon"};
 	
 		final JComboBox<String> cb = new JComboBox<String>(choices);
 	
@@ -127,7 +124,6 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
-
 	}
 
 	public void updateBoard(int[][] board) {

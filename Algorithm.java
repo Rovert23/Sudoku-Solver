@@ -9,15 +9,16 @@ public class Algorithm {
             for (int row = 0; row < 9; row++) {
                 for (int col = 0; col < 9; col++) {
                     if (board[row][col] == 0) {
-                        for (int guess = 1; guess < 9; guess++) {
+                        for (int guess = 1; guess < 10; guess++) {
                             board[row][col] = guess;
                             if (isValid(board)) {
                                 break;
                             }
                         }
-                        if (isValid(board)) {
+                        if (GUI.isValid(board)) {
                             continue;
-                        } else {
+                        }
+                        else {
                             board[row][col] = 0;
                             if (col > 0) {
                                 col--;
