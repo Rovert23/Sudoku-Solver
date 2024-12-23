@@ -24,6 +24,23 @@ public class GUI extends JFrame {
 		// Create an instance of JFrame
 		JFrame frame = new JFrame("Sudoku Solver");
 
+		// Add a button to the GUI
+		JPanel topButtonPanel = new JPanel();
+
+		JLabel lbl = new JLabel("Select an Algorithm and then press SOLVE");
+		lbl.setVisible(true);
+	
+		topButtonPanel.add(lbl);
+	
+		String[] choices = {"Backtracking", "DIY (Do It Yourself)", "Use A Human", "Speed Deamon"};
+	
+		final JComboBox<String> cb = new JComboBox<String>(choices);
+	
+		cb.setVisible(true);
+		topButtonPanel.add(cb);
+
+		frame.add(topButtonPanel);
+
 		JPanel gridPanel = new JPanel();
 
 		GridLayout GL = new GridLayout(9,9);
@@ -68,26 +85,15 @@ public class GUI extends JFrame {
 		gridPanel.setPreferredSize(new Dimension(x * 9, y * 9)); // Preferred size for the grid
 		frame.add(gridPanel);  // Add to CENTER
 
-		// Add a button to the GUI
-		JPanel buttonPanel = new JPanel();
-
-		JLabel lbl = new JLabel("Select an Algorithm and then press SOLVE");
-		lbl.setVisible(true);
-	
-		buttonPanel.add(lbl);
-	
-		String[] choices = {"Backtracking", "DIY (Do It Yourself)", "Use A Human", "Speed Deamon"};
-	
-		final JComboBox<String> cb = new JComboBox<String>(choices);
-	
-		cb.setVisible(true);
-		buttonPanel.add(cb);
-
 		JButton button = new JButton("Solve");
+		JButton resetButton = new JButton("Reset");
+
+		JPanel bottomButtonPanel = new JPanel();
 
 		button.setBounds(150, 200, 220, 50);
-		buttonPanel.add(button);
-		frame.add(buttonPanel);
+		bottomButtonPanel.add(button);
+		bottomButtonPanel.add(resetButton);
+		frame.add(bottomButtonPanel);
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -103,7 +109,8 @@ public class GUI extends JFrame {
 					// YOU NEED TO FINISH THIS SECTION BY ADDING IN ALL OF THE OTHER ALGORITHMS
 					if (selectedAlgorithm.equals("Backtracking")) {
 						solvedBoard = Algorithm.solveWithBacktracking(board);
-					} else if (selectedAlgorithm.equals("Dancing Links")) {
+					}
+					else if (selectedAlgorithm.equals("Dancing Links")) {
 						solvedBoard = Algorithm.solveWithDancingLinks(board);
 					}
 	
@@ -117,13 +124,11 @@ public class GUI extends JFrame {
             }
         });
 
-		// Set the GUI size
-		frame.setSize(x*9+20, y*9+90);
-
 		// TBH IDK Yet
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
+		frame.pack();
 	}
 
 	public void updateBoard(int[][] board) {

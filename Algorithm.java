@@ -4,18 +4,20 @@ public class Algorithm {
 
     public static int[][] solveWithBacktracking(int[][] board) {
 
+        GUI gui = new GUI();
+
         // Implement the backtracking algorithm here
-        while (!GUI.isSolved(board)) {
+        while (!gui.isSolved(board)) {
             for (int row = 0; row < 9; row++) {
                 for (int col = 0; col < 9; col++) {
                     if (board[row][col] == 0) {
                         for (int guess = 1; guess < 10; guess++) {
                             board[row][col] = guess;
-                            if (isValid(board)) {
+                            if (gui.isValid(board)) {
                                 break;
                             }
                         }
-                        if (GUI.isValid(board)) {
+                        if (gui.isValid(board)) {
                             continue;
                         }
                         else {
