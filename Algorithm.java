@@ -1,40 +1,37 @@
 public class Algorithm {
 
-
-
     public static int[][] solveWithBacktracking(int[][] board) {
+        if (solve(board)) {
+            return board;
+        } else {
+            return null; // No solution found
+        }
+    }
+
+    private static boolean solve(int[][] board) {
 
         GUI gui = new GUI();
 
-        // Implement the backtracking algorithm here
-        while (!gui.isSolved(board)) {
-            for (int row = 0; row < 9; row++) {
-                for (int col = 0; col < 9; col++) {
-                    if (board[row][col] == 0) {
-                        for (int guess = 1; guess < 10; guess++) {
-                            board[row][col] = guess;
-                            if (gui.isValid(board)) {
-                                break;
-                            }
-                        }
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (!gui.isValid(board)) {
+                    return false;
+                }
+                if (board[row][col] == 0) {
+                    for (int num = 1; num <= 9; num++) {
                         if (gui.isValid(board)) {
-                            continue;
-                        }
-                        else {
-                            board[row][col] = 0;
-                            if (col > 0) {
-                                col--;
-                            } else {
-                                row--;
-                                col = 8;
+                            board[row][col] = num;
+                            if (solve(board)) {
+                                return true;
                             }
+                            board[row][col] = 0; // Reset on backtrack
                         }
                     }
+                    return false; // Trigger backtracking
                 }
             }
         }
-        return board;
-
+        return true; // Solved
     }
 
 
