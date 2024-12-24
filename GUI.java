@@ -27,6 +27,15 @@ public class GUI extends JFrame {
 		// Add a button to the GUI
 		JPanel topButtonPanel = new JPanel();
 
+		JTextField input = new JTextField(40);
+        JButton importButton = new JButton("Import");
+        JPanel importPanel = new JPanel();
+
+        importPanel.add(input);
+        importPanel.add(importButton);
+
+        frame.add(importPanel, "North");
+
 		JLabel lbl = new JLabel("Select an Algorithm and then press SOLVE");
 		lbl.setVisible(true);
 	
@@ -95,32 +104,61 @@ public class GUI extends JFrame {
 		bottomButtonPanel.add(resetButton);
 		frame.add(bottomButtonPanel);
 
+		importButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String inputText = input.getText();
+                if (inputText.length() != 81) {
+                    JOptionPane.showMessageDialog(frame, "Input must be exactly 81 characters long!");
+                    return;
+                }
+
+                int[][] board = new int[9][9];
+                try {
+                    for (int row = 0; row < 9; row++) {
+                        for (int col = 0; col < 9; col++) {
+                            char c = inputText.charAt(row * 9 + col);
+                            if (c < '0' || c > '9') {
+                                throw new NumberFormatException("Invalid character in input");
+                            }
+                            board[row][col] = c - '0';
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Input must contain only digits from 0 to 9!");
+                    return;
+                }
+
+                updateBoard(board);
+            }
+        });
+
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int[][] board = getBoard();
-                String selectedAlgorithm = (String) cb.getSelectedItem();
-                int[][] solvedBoard = null;
 
-				if (!isValid(board)) {
-					JOptionPane.showMessageDialog(frame, "This board is inValid!");
-				}
-				else {
-					// YOU NEED TO FINISH THIS SECTION BY ADDING IN ALL OF THE OTHER ALGORITHMS
-					if (selectedAlgorithm.equals("Backtracking")) {
-						solvedBoard = Algorithm.solveWithBacktracking(board);
-					}
-					else if (selectedAlgorithm.equals("Dancing Links")) {
-						solvedBoard = Algorithm.solveWithDancingLinks(board);
-					}
-	
-	
-					if (solvedBoard != null) {
-						updateBoard(solvedBoard);
-					} else {
-						JOptionPane.showMessageDialog(frame, "No solution found!");
-					}
-				}
+				stringd(board);
+				System.out.println("");
+
+                if (!isValid(board)) {
+                    JOptionPane.showMessageDialog(frame, "This board is invalid!");
+                } else {
+                    String selectedAlgorithm = (String) cb.getSelectedItem();
+                    int[][] solvedBoard = null;
+
+                    if (selectedAlgorithm.equals("Backtracking")) {
+                        solvedBoard = Algorithm.solveWithBacktracking(board);
+                    } else if (selectedAlgorithm.equals("Dancing Links")) {
+                        solvedBoard = Algorithm.solveWithDancingLinks(board);
+                    }
+
+                    if (solvedBoard != null) {
+                        updateBoard(solvedBoard);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "No solution found!");
+                    }
+                }
             }
         });
 
@@ -129,6 +167,14 @@ public class GUI extends JFrame {
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
 		frame.pack();
+	}
+
+	public void stringd(int[][] board) {
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				System.out.print(board[row][col]);
+			}
+		}
 	}
 
 	public void updateBoard(int[][] board) {
