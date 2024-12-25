@@ -15,3 +15,515 @@ Java Setup:
 2) Algorithms class with different algorithm methods (Algorithms.java)
 3) UI Class with all of the UI elements (I think idk) (GUI.java)
 4) Import Class that handles all importing and processing (Import.java)
+
+
+
+JavaScript to extract the board from the website www.sudokukingdom.com:
+
+function extractSudoku() {
+  return new Promise(resolve => {
+    const checkAndExtract = () => {
+      const gridContainer = document.getElementById('s5');
+      if (gridContainer) {
+        const board = [];
+        const cellDivs = gridContainer.querySelectorAll('div[id^="c"]');
+
+        // Create a 9x9 matrix to hold the values
+        const matrix = Array(9).fill(null).map(() => Array(9).fill(null));
+
+        cellDivs.forEach(cellDiv => {
+            const cellId = cellDiv.id;
+            const row = parseInt(cellId.substring(1, 2));
+            const col = parseInt(cellId.substring(2, 3));
+
+            const valueDiv = cellDiv.querySelector(`div[id="v${row}${col}"]`);
+             const value = valueDiv && valueDiv.textContent.trim() !== "" ? parseInt(valueDiv.textContent.trim()) : 0;
+
+            matrix[row][col] = value;
+        });
+
+
+          // Convert the 2D array to a single string (row by row)
+          let boardString = "";
+          for(let col = 0; col < 9; col++){
+            for(let row = 0; row < 9; row++){
+                boardString += String(matrix[row][col]);
+             }
+          }
+         
+         resolve(boardString);
+      } else {
+        setTimeout(checkAndExtract, 100);
+      }
+    };
+    checkAndExtract();
+  });
+}
+
+extractSudoku().then(boardString => {
+  console.log(boardString);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to fill the Sudoku board on the webpage
+
+function fillSudoku(solutionString) {
+
+    return new Promise(resolve => {
+
+        const gridContainer = document.getElementById('s5');
+
+        if (!gridContainer) {
+
+            console.error("Grid container 's5' not found.");
+
+            return resolve();
+
+        }
+
+        const cellDivs = gridContainer.querySelectorAll('div[id^="c"]');
+
+
+        cellDivs.forEach((cellDiv, index) => {
+
+            const cellId = cellDiv.id;
+
+            const row = parseInt(cellId.charAt(1));
+
+            const col = parseInt(cellId.charAt(2));
+
+
+            const valueDiv = cellDiv.querySelector(`div[id="v${row}${col}"]`);
+
+            const currentValue = valueDiv && valueDiv.textContent.trim() !== "" ? parseInt(valueDiv.textContent.trim()) : 0;
+
+
+            if (currentValue === 0) {
+
+                const correctValue = parseInt(solutionString.charAt(row * 9 + col));
+
+                cellDiv.click();
+
+                const button = document.getElementById(`K${correctValue}`);
+
+                if (button) {
+
+                    button.click();
+
+                } else {
+
+                    console.warn(`Button K${correctValue} not found.`);
+
+                }
+
+            }
+
+        });
+
+        resolve();
+
+    });
+
+}
+
+
+// Function to convert the board state (string or 2D array) to a 2D array
+
+function convertStringToBoard(solutionString) {
+
+    let board = [];
+
+    for (let i = 0; i < 9; i++) {
+
+        let row = [];
+
+        for (let j = 0; j < 9; j++) {
+
+            row.push(parseInt(solutionString.charAt(i * 9 + j)));
+
+        }
+
+        board.push(row);
+
+    }
+
+    return board;
+
+}
+
+
+// Function to extract the current board state from the webpage
+
+async function extractBoardState() {
+
+    return new Promise(resolve => {
+
+        const gridContainer = document.getElementById('s5');
+
+        if (!gridContainer) {
+
+            console.error("Grid container 's5' not found.");
+
+            return resolve("0".repeat(81));
+
+        }
+
+        const matrix = Array(9).fill(null).map(() => Array(9).fill(0));
+
+        const cellDivs = gridContainer.querySelectorAll('div[id^="c"]');
+
+
+        cellDivs.forEach(cellDiv => {
+
+            const cellId = cellDiv.id;
+
+            const row = parseInt(cellId.substring(1, 2));
+
+            const col = parseInt(cellId.substring(2, 3));
+
+            const valueDiv = cellDiv.querySelector(`div[id="v${row}${col}"]`);
+
+            const value = valueDiv && valueDiv.textContent.trim() !== "" ? parseInt(valueDiv.textContent.trim()) : 0;
+
+            matrix[row][col] = value;
+
+        });
+
+
+        let initialBoardString = "";
+
+        for (let row = 0; row < 9; row++) {
+
+            for (let col = 0; col < 9; col++) {
+
+                initialBoardString += String(matrix[row][col]);
+
+            }
+
+        }
+
+        resolve(initialBoardString);
+
+    });
+
+}
+
+
+// Function to wait for a new Sudoku grid to be loaded
+
+function waitForNewGrid() {
+
+    return new Promise(resolve => {
+
+        const observer = new MutationObserver((mutationsList, observer) => {
+
+            for (const mutation of mutationsList) {
+
+                if (mutation.type === 'childList' && mutation.target.id === 's5') {
+
+                    if (document.getElementById('s5').querySelectorAll('div[id^="c"]').length > 0) {
+
+                        observer.disconnect();
+
+                        resolve();
+
+                        return;
+
+                    }
+
+                }
+
+            }
+
+        });
+
+
+        const config = { childList: true, subtree: false };
+
+        const gridContainer = document.getElementById('s5');
+
+        if (gridContainer) {
+
+            observer.observe(gridContainer, config);
+
+        } else {
+
+          resolve();
+
+        }
+
+    });
+
+}
+
+
+// Function to click the "Very Hard" button and solve the new puzzle
+
+async function solveNewPuzzle() {
+
+    const button = document.getElementById('rmx');
+
+    if (button) {
+
+        console.log("Clicking 'Very Hard' button...");
+
+        button.click();
+
+        await waitForNewGrid();
+
+        console.log("New grid loaded.");
+
+    } else {
+
+        console.warn("Button with ID 'rmx' not found.");
+
+    }
+
+}
+
+
+// Sudoku solver using backtracking
+
+function solveSudoku(board) {
+
+    const findEmpty = (board) => {
+
+        for (let r = 0; r < 9; r++) {
+
+            for (let c = 0; c < 9; c++) {
+
+                if (board[r][c] === 0) {
+
+                    return [r, c];
+
+                }
+
+            }
+
+        }
+
+        return null;
+
+    };
+
+
+    const isValid = (board, num, pos) => {
+
+        for (let i = 0; i < 9; i++) {
+
+            if (board[pos[0]][i] === num && i !== pos[1]) {
+
+                return false;
+
+            }
+
+        }
+
+
+        for (let i = 0; i < 9; i++) {
+
+            if (board[i][pos[1]] === num && i !== pos[0]) {
+
+                return false;
+
+            }
+
+        }
+
+
+        const boxX = Math.floor(pos[1] / 3);
+
+        const boxY = Math.floor(pos[0] / 3);
+
+
+        for (let i = boxY * 3; i < boxY * 3 + 3; i++) {
+
+            for (let j = boxX * 3; j < boxX * 3 + 3; j++) {
+
+                if (board[i][j] === num && [i, j] !== pos) {
+
+                    return false;
+
+                }
+
+            }
+
+        }
+
+
+        return true;
+
+    };
+
+
+    const solve = (board) => {
+
+        const find = findEmpty(board);
+
+        if (!find) {
+
+            return board;
+
+        } else {
+
+            let row = find[0];
+
+            let col = find[1];
+
+
+            for (let num = 1; num <= 9; num++) {
+
+                if (isValid(board, num, [row, col])) {
+
+                    board[row][col] = num;
+
+
+                    if (solve(board)) {
+
+                        return board;
+
+                    }
+
+
+                    board[row][col] = 0;
+
+                }
+
+            }
+
+
+            return false;
+
+        }
+
+    };
+
+    return solve([...board.map(row => [...row])]);
+
+}
+
+
+// Main function to solve and fill the Sudoku
+
+async function solveAndFillSudoku() {
+
+    try {
+
+        const initialBoardString = await extractBoardState();
+
+        console.log("Initial Board String (extracted from webpage):", initialBoardString);
+
+
+        const board = convertStringToBoard(initialBoardString);
+
+        console.log("Initial board as a 2D Array:", board);
+
+
+        const solvedBoard = solveSudoku(board);
+
+        if (!solvedBoard) {
+
+            console.error("Sudoku has no solution");
+
+            return;
+
+        }
+
+        console.log("Solved board as a 2D Array:", solvedBoard);
+
+
+        const solvedSolutionString = solvedBoard.flat().join('');
+
+        console.log("Solved Board String (to be used for filling):", solvedSolutionString);
+
+
+        await fillSudoku(solvedSolutionString);
+
+        console.log("Sudoku Solved and Filled on Webpage!");
+
+    } catch (error) {
+
+        console.error("An error occurred during solving: ", error);
+
+    }
+
+}
+
+
+// Delay function
+
+function delay(ms) {
+
+    return new Promise(resolve => setTimeout(resolve, ms));
+
+}
+
+
+let isRunning = true;
+
+
+// Start the solving and looping process
+
+async function startLoopingSolver() {
+
+    while (isRunning) {
+
+        try {
+
+            await solveAndFillSudoku();
+
+            await delay(1000);
+
+            await solveNewPuzzle();
+
+            await delay(1000);
+
+        } catch (error) {
+
+            console.error("Error in the looping solver:", error);
+
+        }
+
+    }
+
+}
+
+
+function stopLoopingSolver() {
+
+    isRunning = false;
+
+}
+
+
+startLoopingSolver();
+
+
+// Example of how to stop the loop (e.g., with a button)
+
+// const stopButton = document.getElementById('stopButton');
+
+// if (stopButton) {
+
+//     stopButton.addEventListener('click', stopLoopingSolver);
+
+// } 
