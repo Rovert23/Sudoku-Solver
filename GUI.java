@@ -121,7 +121,7 @@ public class GUI extends JFrame {
                             if (c < '0' || c > '9') {
                                 throw new NumberFormatException("Invalid character in input");
                             }
-                            board[row][col] = c - '0';
+							board[row][col] = c - '0';
                         }
                     }
                 } catch (NumberFormatException ex) {
@@ -162,11 +162,23 @@ public class GUI extends JFrame {
             }
         });
 
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int row = 0; row < 9; row++) {
+					for (int col = 0; col < 9; col++) {
+						TFS[row][col].setText(""); // Clear the text from the grid
+					}
+				}
+				input.setText(""); // Reset the import section
+			}
+		});
+
 		// TBH IDK Yet
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
-		frame.pack();
+		frame.setSize(500, 620);
 	}
 
 	public void stringd(int[][] board) {
@@ -178,12 +190,15 @@ public class GUI extends JFrame {
 	}
 
 	public void updateBoard(int[][] board) {
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                TFS[row][col].setText(String.valueOf(board[row][col]));
-            }
-        }
-    }
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				TFS[row][col].setText(""); // Clear before setting the value
+				if (board[row][col] != 0) {
+					TFS[row][col].setText(String.valueOf(board[row][col])); 
+				}
+			}
+		}
+	}
 
 	public int[][] getBoard() {
 		int[][] board = new int[9][9];
