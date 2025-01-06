@@ -24,47 +24,51 @@ public class GUI extends JFrame {
 		// Create an instance of JFrame
 		JFrame frame = new JFrame("Sudoku Solver");
 
+		// Create a main panel with BoxLayout
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
 		// Add a button to the GUI
 		JPanel topButtonPanel = new JPanel();
 
 		// Import stuff
-		// JTextField input = new JTextField(40);
-        // JButton importButton = new JButton("Import");
-        // JPanel importPanel = new JPanel();
+		JTextField input = new JTextField(40);
+        JButton importButton = new JButton("Import");
+        JPanel importPanel = new JPanel();
 
-        // importPanel.add(input);
-        // importPanel.add(importButton);
+        importPanel.add(input);
+        importPanel.add(importButton);
 
-        // frame.add(importPanel, "North");
+        mainPanel.add(importPanel);
 
-		// importButton.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         String inputText = input.getText();
-        //         if (inputText.length() != 81) {
-        //             JOptionPane.showMessageDialog(frame, "Input must be exactly 81 characters long!");
-        //             return;
-        //         }
+		importButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String inputText = input.getText();
+                if (inputText.length() != 81) {
+                    JOptionPane.showMessageDialog(frame, "Input must be exactly 81 characters long!");
+                    return;
+                }
 
-        //         int[][] board = new int[9][9];
-        //         try {
-        //             for (int row = 0; row < 9; row++) {
-        //                 for (int col = 0; col < 9; col++) {
-        //                     char c = inputText.charAt(row * 9 + col);
-        //                     if (c < '0' || c > '9') {
-        //                         throw new NumberFormatException("Invalid character in input");
-        //                     }
-		// 					board[row][col] = c - '0';
-        //                 }
-        //             }
-        //         } catch (NumberFormatException ex) {
-        //             JOptionPane.showMessageDialog(frame, "Input must contain only digits from 0 to 9!");
-        //             return;
-        //         }
+                int[][] board = new int[9][9];
+                try {
+                    for (int row = 0; row < 9; row++) {
+                        for (int col = 0; col < 9; col++) {
+                            char c = inputText.charAt(row * 9 + col);
+                            if (c < '0' || c > '9') {
+                                throw new NumberFormatException("Invalid character in input");
+                            }
+							board[row][col] = c - '0';
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Input must contain only digits from 0 to 9!");
+                    return;
+                }
 
-        //         updateBoard(board);
-        //     }
-        // });
+                updateBoard(board);
+            }
+        });
 
 		JLabel lbl = new JLabel("Select an Algorithm and then press SOLVE");
 		lbl.setVisible(true);
@@ -78,7 +82,7 @@ public class GUI extends JFrame {
 		cb.setVisible(true);
 		topButtonPanel.add(cb);
 
-		frame.add(topButtonPanel);
+		mainPanel.add(topButtonPanel);
 
 		JPanel gridPanel = new JPanel();
 
@@ -122,7 +126,7 @@ public class GUI extends JFrame {
 		}
 
 		gridPanel.setPreferredSize(new Dimension(x * 9, y * 9)); // Preferred size for the grid
-		frame.add(gridPanel);  // Add to CENTER
+		mainPanel.add(gridPanel);  // Add to CENTER
 
 		JButton button = new JButton("Solve");
 		JButton resetButton = new JButton("Reset");
@@ -132,7 +136,7 @@ public class GUI extends JFrame {
 		button.setBounds(150, 200, 220, 50);
 		bottomButtonPanel.add(button);
 		bottomButtonPanel.add(resetButton);
-		frame.add(bottomButtonPanel);
+		mainPanel.add(bottomButtonPanel);
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -170,16 +174,18 @@ public class GUI extends JFrame {
 						TFS[row][col].setText(""); // Clear the text from the grid
 					}
 				}
-				//input.setText(""); // Reset the import section
+				// More inport stuff
+				input.setText(""); // Reset the import section
 			}
 		});
+
+		frame.add(mainPanel);
 
 		// TBH IDK Yet
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
 		frame.pack();
-		frame.setSize(500, 580);
 	}
 
 	public void stringd(int[][] board) {
