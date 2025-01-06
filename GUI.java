@@ -27,21 +27,51 @@ public class GUI extends JFrame {
 		// Add a button to the GUI
 		JPanel topButtonPanel = new JPanel();
 
-		JTextField input = new JTextField(40);
-        JButton importButton = new JButton("Import");
-        JPanel importPanel = new JPanel();
+		// Import stuff
+		// JTextField input = new JTextField(40);
+        // JButton importButton = new JButton("Import");
+        // JPanel importPanel = new JPanel();
 
-        importPanel.add(input);
-        importPanel.add(importButton);
+        // importPanel.add(input);
+        // importPanel.add(importButton);
 
-        frame.add(importPanel, "North");
+        // frame.add(importPanel, "North");
+
+		// importButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         String inputText = input.getText();
+        //         if (inputText.length() != 81) {
+        //             JOptionPane.showMessageDialog(frame, "Input must be exactly 81 characters long!");
+        //             return;
+        //         }
+
+        //         int[][] board = new int[9][9];
+        //         try {
+        //             for (int row = 0; row < 9; row++) {
+        //                 for (int col = 0; col < 9; col++) {
+        //                     char c = inputText.charAt(row * 9 + col);
+        //                     if (c < '0' || c > '9') {
+        //                         throw new NumberFormatException("Invalid character in input");
+        //                     }
+		// 					board[row][col] = c - '0';
+        //                 }
+        //             }
+        //         } catch (NumberFormatException ex) {
+        //             JOptionPane.showMessageDialog(frame, "Input must contain only digits from 0 to 9!");
+        //             return;
+        //         }
+
+        //         updateBoard(board);
+        //     }
+        // });
 
 		JLabel lbl = new JLabel("Select an Algorithm and then press SOLVE");
 		lbl.setVisible(true);
 	
 		topButtonPanel.add(lbl);
 	
-		String[] choices = {"Backtracking", "DIY (Do It Yourself)", "Use A Human", "Speed Deamon"};
+		String[] choices = {"Backtracking", "Solve It Yourself"};
 	
 		final JComboBox<String> cb = new JComboBox<String>(choices);
 	
@@ -104,59 +134,29 @@ public class GUI extends JFrame {
 		bottomButtonPanel.add(resetButton);
 		frame.add(bottomButtonPanel);
 
-		importButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String inputText = input.getText();
-                if (inputText.length() != 81) {
-                    JOptionPane.showMessageDialog(frame, "Input must be exactly 81 characters long!");
-                    return;
-                }
-
-                int[][] board = new int[9][9];
-                try {
-                    for (int row = 0; row < 9; row++) {
-                        for (int col = 0; col < 9; col++) {
-                            char c = inputText.charAt(row * 9 + col);
-                            if (c < '0' || c > '9') {
-                                throw new NumberFormatException("Invalid character in input");
-                            }
-							board[row][col] = c - '0';
-                        }
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Input must contain only digits from 0 to 9!");
-                    return;
-                }
-
-                updateBoard(board);
-            }
-        });
-
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int[][] board = getBoard();
 
-				stringd(board);
-				System.out.println("");
-
                 if (!isValid(board)) {
-                    JOptionPane.showMessageDialog(frame, "This board is invalid!");
-                } else {
+                    JOptionPane.showMessageDialog(frame, "This board is invalid!\nMake sure you have entered all numbers correctly.");
+                }
+				else {
                     String selectedAlgorithm = (String) cb.getSelectedItem();
                     int[][] solvedBoard = null;
 
                     if (selectedAlgorithm.equals("Backtracking")) {
                         solvedBoard = Algorithm.solveWithBacktracking(board);
-                    } else if (selectedAlgorithm.equals("Dancing Links")) {
-                        solvedBoard = Algorithm.solveWithDancingLinks(board);
+						if (solvedBoard != null) {
+							updateBoard(solvedBoard);
+						}
+						else {
+							JOptionPane.showMessageDialog(frame, "No solution found!");
+						}
                     }
-
-                    if (solvedBoard != null) {
-                        updateBoard(solvedBoard);
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "No solution found!");
+					else if (selectedAlgorithm.equals("Solve It Yourself")) {
+                        JOptionPane.showMessageDialog(frame, "Feel free to start solving it at any time! ;)");
                     }
                 }
             }
@@ -170,7 +170,7 @@ public class GUI extends JFrame {
 						TFS[row][col].setText(""); // Clear the text from the grid
 					}
 				}
-				input.setText(""); // Reset the import section
+				//input.setText(""); // Reset the import section
 			}
 		});
 
@@ -178,7 +178,8 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		frame.setVisible(true);
-		frame.setSize(500, 620);
+		frame.pack();
+		frame.setSize(500, 580);
 	}
 
 	public void stringd(int[][] board) {
