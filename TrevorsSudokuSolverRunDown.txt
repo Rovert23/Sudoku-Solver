@@ -6,7 +6,6 @@ Goals:
 5) Be able to generate new sudoku puzzles that can be solved logically (human solvable with no guessing)
 6) Be able to solve different sizes and difficulties of sudoku puzzles (bigger or smaller grids, varying difficulties, and numbers/letters/etc)
 7) Display solve time, and store it to a log file
-
 8) Add a clear button, or a restart button (or something similar)
 
 
