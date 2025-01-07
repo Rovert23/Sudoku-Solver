@@ -4,20 +4,15 @@ A Java program with a GUI that is capable of solving sudoku puzzles.
 
 ## Features
 
-1. Solve Sudoku puzzles as fast as possible using two algorithms.
-2. Easy-to-use GUI with simple buttons and minimal required actions.
-3. Import Sudoku puzzles from multiple types of input.
-4. Select from multiple solving methods.
-5. Generate new Sudoku puzzles that can be solved logically.
-6. Solve different sizes and difficulties of Sudoku puzzles.
-7. Display solve time and store it to a log file.
+1. Solve Sudoku puzzles as quickly using backtracking.
+2. Easy-to-use GUI with simple buttons.
+3. Import Sudoku puzzles fromp an 81 character long string.
+6. Display solve time.
 
 ## Project Structure
 
-- `SudokuSolver.java`: Main class with the entry point of the application.
-- `Algorithms.java`: Contains different algorithm methods for solving Sudoku puzzles.
-- `GUI.java`: Handles all the UI elements.
-- `TestCode.java`: Placeholder for test code.
+- `SudokuSolver.java`: Main class with GUI information.
+- `Algorithms.java`: Contains the algorithm for solving Sudoku puzzles.
 - `TrevorsSudokuSolverRunDown.txt`: Contains project goals and setup information.
 
 ## How to Run
@@ -33,3 +28,4 @@ A Java program with a GUI that is capable of solving sudoku puzzles.
 3. Input the Sudoku puzzle manually or import it.
 4. Click the "Solve" button to solve the puzzle.
 5. View the solved puzzle and solve time.
+6. Click the "Reset" button, or restart the program to solve another puzzle.

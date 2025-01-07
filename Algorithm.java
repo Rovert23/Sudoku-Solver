@@ -53,9 +53,4 @@ public class Algorithm {
         }
         return true;
     }
-
-    public static int[][] solveWithDancingLinks(int[][] board) {
-        // Implement the dancing links algorithm here
-        return board; // Placeholder return
-    }
 }
