@@ -4,7 +4,7 @@ A Java program with a GUI that is capable of solving sudoku puzzles.
 
 ## Features
 
-1. Solve Sudoku puzzles as fast as possible using various algorithms.
+1. Solve Sudoku puzzles as fast as possible using two algorithms.
 2. Easy-to-use GUI with simple buttons and minimal required actions.
 3. Import Sudoku puzzles from multiple types of input.
 4. Select from multiple solving methods.
@@ -17,7 +17,6 @@ A Java program with a GUI that is capable of solving sudoku puzzles.
 - `SudokuSolver.java`: Main class with the entry point of the application.
 - `Algorithms.java`: Contains different algorithm methods for solving Sudoku puzzles.
 - `GUI.java`: Handles all the UI elements.
-- `Import.java`: Manages importing and processing of Sudoku puzzles.
 - `TestCode.java`: Placeholder for test code.
 - `TrevorsSudokuSolverRunDown.txt`: Contains project goals and setup information.
 
@@ -34,4 +33,3 @@ A Java program with a GUI that is capable of solving sudoku puzzles.
 3. Input the Sudoku puzzle manually or import it.
 4. Click the "Solve" button to solve the puzzle.
 5. View the solved puzzle and solve time.
-
